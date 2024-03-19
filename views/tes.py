@@ -16,13 +16,15 @@ def images_to_text(images, doc_path):
     custom_config = '--oem 3 --psm 6'
     for i, img in enumerate(images):
         img_text = pytesseract.image_to_string(img, config=custom_config)
-        # img_text = re.sub(r'[\x00-\x1F\x7F]', '', img_text)
+        img_text = re.sub(r'[\x00-\x1F\x7F]', '', img_text)
         text_to_word(img_text, doc)
         print(f"{(i + 1) / len(images) * 100}%")  # print progress
     doc.save(doc_path)
 
 def text_to_word(text, doc):
-    doc.add_paragraph(text)
+    lines = text.split('\n')
+    for line in lines:
+        doc.add_paragraph(line)
     
 
 pdf_path = sys.argv[1]
