@@ -3,6 +3,7 @@ import sys
 from pdf2image import convert_from_path
 import pytesseract
 from docx import Document
+import re
 
 def pdf_to_images(pdf_path):
     return convert_from_path(pdf_path)
@@ -13,6 +14,7 @@ def images_to_text(images):
     text = ""
     for i, img in enumerate(images):
         img_text = pytesseract.image_to_string(img)
+        img_text = re.sub(r'[\x00-\x1F\x7F]', '', img_text)
         text += img_text
         print(f"{(i + 1) / len(images) * 100}%")  # print progress
     return text
