@@ -6,6 +6,8 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 const { exec } = require('child_process');
+const fs = require('fs');
+
 
 
 // Create an instance of express
@@ -24,12 +26,12 @@ app.get('/', (req, res) => {
 });
 
 
-
 app.post('/convertToDocx', upload.single('pdfFile'), (req, res) => {
     // req.file is the 'pdfFile' file
     const pythonScriptPath = path.join(__dirname + "/views", 'tes.py');
     const filePath = req.file.path;
-    const outputPath = path.join(__dirname, 'output.docx');
+    const timestamp = Date.now();
+    const outputPath = path.join(__dirname, `output_${timestamp}.docx`);
 
     const child = exec(`python ${pythonScriptPath} ${filePath} ${outputPath}`);
 
@@ -53,6 +55,15 @@ app.post('/convertToDocx', upload.single('pdfFile'), (req, res) => {
                 console.log(`Error: ${err.message}`);
                 return res.status(500).send('An error occurred during file download.');
             }
+
+            // Delete the output file
+            fs.unlink(outputPath, (err) => {
+                if (err) {
+                    console.log(`Error: ${err.message}`);
+                } else {
+                    console.log(`Deleted file: ${outputPath}`);
+                }
+            });
         });
     });
 });
