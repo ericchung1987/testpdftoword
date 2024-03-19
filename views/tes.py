@@ -1,3 +1,4 @@
+# pip install pdf2image pytesseract python-docx
 import sys
 from pdf2image import convert_from_path
 import pytesseract
