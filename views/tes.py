@@ -8,7 +8,8 @@ def pdf_to_images(pdf_path):
     return convert_from_path(pdf_path)
 
 def images_to_text(images):
-    pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+    pytesseract.pytesseract.tesseract_cmd = r'/app/.apt/usr/bin/tesseract'
     text = ""
     for i, img in enumerate(images):
         text += pytesseract.image_to_string(img)
