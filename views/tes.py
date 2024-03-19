@@ -12,7 +12,8 @@ def images_to_text(images):
     pytesseract.pytesseract.tesseract_cmd = r'/app/.apt/usr/bin/tesseract'
     text = ""
     for i, img in enumerate(images):
-        text += pytesseract.image_to_string(img)
+        img_text = pytesseract.image_to_string(img)
+        text += img_text
         print(f"{(i + 1) / len(images) * 100}%")  # print progress
     return text
 
